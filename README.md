@@ -85,10 +85,10 @@ ps aux | grep loop-monitor.sh
 
 **Kết quả hiển thị mẫu:**
 ```text
-root       14258  0.0  0.1  13248  3120 ?        S    14:26   0:00 /bin/bash ./loop-monitor.sh
+root       101606  0.0  0.1  13248  3120 ?        S    14:26   0:00 /bin/bash ./loop-monitor.sh
 root       14265  0.0  0.0   6432   720 pts/0    S+   14:26   0:00 grep --color=auto loop-monitor.sh
 ```
-> **Xác định:** Số PID của tiến trình là **`14258`** (cột thứ 2). Cột `TTY` mang dấu `?` biểu thị tiến trình đã tách rời hoàn toàn khỏi cửa sổ điều khiển Terminal.
+> **Xác định:** Số PID của tiến trình là **`101606`** (cột thứ 2). Cột `TTY` mang dấu `?` biểu thị tiến trình đã tách rời hoàn toàn khỏi cửa sổ điều khiển Terminal.
 
 ---
 
@@ -100,16 +100,13 @@ tail -n 10 /tmp/monitor.log
 
 **Kết quả ghi log thực tế:**
 ```text
-System time: Tue Oct  6 14:26:10 +07 2026
-System time: Tue Oct  6 14:26:15 +07 2026
-System time: Tue Oct  6 14:26:20 +07 2026
-System time: Tue Oct  6 14:26:25 +07 2026
-System time: Tue Oct  6 14:26:30 +07 2026
-System time: Tue Oct  6 14:26:35 +07 2026
-System time: Tue Oct  6 14:26:40 +07 2026
-System time: Tue Oct  6 14:26:45 +07 2026
-System time: Tue Oct  6 14:26:50 +07 2026
-System time: Tue Oct  6 14:26:55 +07 2026
+System time: Tue Oct  6 09:38:24 PM +07 2026
+System time: Tue Oct  6 09:38:29 PM +07 2026
+System time: Tue Oct  6 09:38:34 PM +07 2026
+System time: Tue Oct  6 09:38:39 PM +07 2026
+System time: Tue Oct  6 09:38:44 PM +07 2026
+System time: Tue Oct  6 09:38:49 PM +07 2026
+System time: Tue Oct  6 09:38:54 PM +07 2026
 ```
 *(Có thể dùng `tail -f /tmp/monitor.log` để xem dòng log tự động xuất hiện theo thời gian thực).*
 
@@ -129,8 +126,8 @@ System time: Tue Oct  6 14:26:55 +07 2026
 ### Bước 6: Tắt tiến trình an toàn bằng tín hiệu SIGTERM (15)
 Gửi tín hiệu yêu cầu dừng tiến trình một cách lịch sự:
 ```bash
-kill -15 14258
-# (Thay 14258 bằng PID thực tế của bạn)
+kill -15 101606
+# (Thay 101606 bằng PID thực tế của bạn)
 ```
 
 ---
@@ -142,7 +139,8 @@ ps aux | grep loop-monitor.sh
 ```
 **Kết quả thực thi:**
 ```text
-root       14310  0.0  0.0   6432   720 pts/0    S+   14:27   0:00 grep --color=auto loop-monitor.sh
+root      101651  0.0  0.0   6620  2300 pts/0    S+   21:39   0:00 grep --color=auto loop-monitor.sh
+[1]+  Terminated              nohup ./loop-monitor.sh > /dev/null 2>&1
 ```
 > **Kết quả mong đợi:** Tiến trình `loop-monitor.sh` đã biến mất hoàn toàn khỏi hệ thống (chỉ còn lại lệnh `grep` tìm kiếm tức thời).
 
@@ -154,7 +152,7 @@ root       14310  0.0  0.0   6432   720 pts/0    S+   14:27   0:00 grep --color=
 ```bash
 nohup ./loop-monitor.sh > /dev/null 2>&1 &
 pgrep -f loop-monitor.sh
-# Output: 14258
+# Output: 101606
 ```
 
 ### 5.2. Nội dung file log `/tmp/monitor.log`
@@ -170,7 +168,7 @@ tail -n 5 /tmp/monitor.log
 
 ### 5.3. Tắt tiến trình với SIGTERM
 ```bash
-kill -15 14258
+kill -15 101606
 ps aux | grep loop-monitor.sh
 # Output: Tiến trình đã dừng hoàn toàn.
 ```
